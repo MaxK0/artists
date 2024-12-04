@@ -21,8 +21,8 @@ test('Возможность получить все данные песен', f
         ->assertJsonFragment([
             'id' => $song->id,
             'title' => $song->title,
-            'created_at' => $song->created_at,
-            'updated_at' => $song->updated_at
+            'created_at' => $song->created_at->toISOString(),
+            'updated_at' => $song->updated_at->toISOString()
         ]);
 });
 
@@ -73,8 +73,8 @@ test('Возможность показать данные определенн�
             'song' => [
                 'id' => $song->id,
                 'title' => $song->title,
-                'created_at' => $song->created_at,
-                'updated_at' => $song->updated_at
+                'created_at' => $song->created_at->toISOString(),
+                'updated_at' => $song->updated_at->toISOString()
             ]
         ]);
 });
@@ -92,8 +92,8 @@ test('Возможность обновить данные песни', function
             'song' => [
                 'id' => $song->id,
                 'title' => $songData['title'],
-                'created_at' => $song->created_at,
-                'updated_at' => $song->fresh()->updated_at
+                'created_at' => $song->created_at->toISOString(),
+                'updated_at' => $song->fresh()->updated_at->toISOString()
             ]
         ]);
 
