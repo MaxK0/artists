@@ -14,3 +14,7 @@
 <br>
 
 Просмотр swagger: /swagger
+
+<br>
+
+Пути к api начинаются с /api/v1/
