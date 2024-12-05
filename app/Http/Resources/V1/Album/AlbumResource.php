@@ -18,7 +18,7 @@ class AlbumResource extends JsonResource
         return [
             'id' => $this->id,
             'release_year' => $this->release_year,
-            'artist_id' => $this->artist_id,
+            'artist_id' => $this->when(! $request->routeIs('api.v1.artists.*'), $this->artist_id),
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
             'songs' => new SongCollection($this->whenLoaded('songs')),

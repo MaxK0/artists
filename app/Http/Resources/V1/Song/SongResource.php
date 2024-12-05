@@ -14,17 +14,12 @@ class SongResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $data = [
+        return [
             'id' => $this->id,
             'title' => $this->title,
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
+            'order' => $this->when(isset($this->pivot->song_order), fn () => $this->pivot->song_order)
         ];
-
-        if (isset($this->pivot->song_order)) {
-            $data['order'] = $this->pivot->song_order;
-        }
-
-        return $data;
     }
 }
