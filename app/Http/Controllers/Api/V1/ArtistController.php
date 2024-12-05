@@ -55,7 +55,17 @@ class ArtistController extends Controller
      */
     public function show(Artist $artist)
     {
-        //
+        $artist = $this->artistService
+            ->getArtist($artist);
+
+        $data = [
+            'artist' => new ArtistResource($artist)
+        ];
+
+        return response()->json(
+            $data,
+            Response::HTTP_OK
+        );
     }
 
 
@@ -64,7 +74,16 @@ class ArtistController extends Controller
      */
     public function update(UpdateRequest $request, Artist $artist)
     {
-        //
+        $data = $request->validated();
+
+        $this->artistService
+            ->update($artist, $data);
+
+        $data = [
+            'artist' => new ArtistResource($artist->refresh())
+        ];
+
+        return response()->json($data);
     }
 
 
@@ -73,6 +92,9 @@ class ArtistController extends Controller
      */
     public function destroy(Artist $artist)
     {
-        //
+        $this->artistService
+            ->delete($artist);
+
+        return response()->noContent();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\V1;
 
+use App\Http\Resources\V1\Artist\ArtistResource;
 use App\Models\Artist;
 use App\Services\BaseService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -19,11 +20,19 @@ class ArtistService extends BaseService
         $artists = $this->model
             ->query()
             ->with('albums.songs', function ($q) {
-                $q->orderBy('pivot_song_order');
+                $q->ordered();
             })
             ->paginate($perPage)
             ->withQueryString();
 
         return $artists;
+    }
+
+
+    public function getArtist(Artist $artist): Artist
+    {
+        return $artist->load(['albums.songs' => function ($q) {
+            $q->ordered();
+        }]);
     }
 }
