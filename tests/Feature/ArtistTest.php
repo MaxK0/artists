@@ -163,7 +163,7 @@ test('Возможность обновить исполнителя', function 
                 'id' => $artist->id,
                 'name' => $updateArtistData['name'],
                 'created_at' => $artist->created_at->toISOString(),
-                'updated_at' => $artist->fresh()->updated_at->toISOString(),
+                'updated_at' => $artist->refresh()->updated_at->toISOString(),
             ]
         ]);
 

@@ -132,7 +132,7 @@ test('Возможность обновить данные альбома', func
                 'id' => $album->id,
                 'release_year' => $albumData['release_year'],
                 'created_at' => $album->created_at->toISOString(),
-                'updated_at' => $album->fresh()->updated_at->toISOString()
+                'updated_at' => $album->refresh()->updated_at->toISOString()
             ]
         ]);
 
@@ -203,17 +203,17 @@ test('Невозможность прикрепить песни с неверн
     ];
 
     $this->postJson(route('api.v1.albums.songs.attach', $album->id), $data)
-        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY); 
+        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
     $data['song_ids'] = $song->id;
 
     $this->postJson(route('api.v1.albums.songs.attach', $album->id), $data)
-        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY); 
+        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
     $data['song_ids'] = ['a'];
 
     $this->postJson(route('api.v1.albums.songs.attach', $album->id), $data)
-        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY); 
+        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 });
 
 test('Невозможность прикрепить песню, которая есть в альбоме', function () {
@@ -227,7 +227,7 @@ test('Невозможность прикрепить песню, которая
     ];
 
     $this->postJson(route('api.v1.albums.songs.attach', $album->id), $data)
-        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY); 
+        ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 });
 
 test('Возможность открепить песни от альбома', function () {
@@ -241,7 +241,7 @@ test('Возможность открепить песни от альбома',
     ];
 
     $this->postJson(route('api.v1.albums.songs.detach', $album->id), $data)
-        ->assertStatus(Response::HTTP_NO_CONTENT); 
+        ->assertStatus(Response::HTTP_NO_CONTENT);
 
     $this->assertDatabaseMissing('album_song', [
         'album_id' => $album->id,

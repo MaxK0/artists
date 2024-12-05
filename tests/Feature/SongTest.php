@@ -92,7 +92,7 @@ test('Возможность обновить данные песни', function
                 'id' => $song->id,
                 'title' => $songData['title'],
                 'created_at' => $song->created_at->toISOString(),
-                'updated_at' => $song->fresh()->updated_at->toISOString()
+                'updated_at' => $song->refresh()->updated_at->toISOString()
             ]
         ]);
 
