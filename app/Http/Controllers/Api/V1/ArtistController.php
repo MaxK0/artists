@@ -39,14 +39,8 @@ class ArtistController extends Controller
         $artist = $this->artistService
             ->create($data);
 
-        $dataResponse = [
-            'artist' => new ArtistResource($artist)
-        ];
-
-        return response()->json(
-            $dataResponse,
-            Response::HTTP_CREATED
-        );
+        return $this->artistService
+            ->resourceResponse($artist, Response::HTTP_CREATED);
     }
 
 
@@ -58,14 +52,8 @@ class ArtistController extends Controller
         $artist = $this->artistService
             ->getArtist($artist);
 
-        $data = [
-            'artist' => new ArtistResource($artist)
-        ];
-
-        return response()->json(
-            $data,
-            Response::HTTP_OK
-        );
+        return $this->artistService
+            ->resourceResponse($artist);
     }
 
 
@@ -79,11 +67,8 @@ class ArtistController extends Controller
         $this->artistService
             ->update($artist, $data);
 
-        $data = [
-            'artist' => new ArtistResource($artist->refresh())
-        ];
-
-        return response()->json($data);
+        return $this->artistService
+            ->resourceResponse($artist->refresh());
     }
 
 

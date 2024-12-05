@@ -6,6 +6,8 @@ use App\Http\Resources\V1\Artist\ArtistResource;
 use App\Models\Artist;
 use App\Services\BaseService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class ArtistService extends BaseService
 {
@@ -34,5 +36,13 @@ class ArtistService extends BaseService
         return $artist->load(['albums.songs' => function ($q) {
             $q->ordered();
         }]);
+    }
+
+
+    public function resourceResponse(Artist $artist, $status = Response::HTTP_OK): JsonResponse
+    {
+        return response()->json([
+            'artist' => new ArtistResource($artist)
+        ], $status);
     }
 }
