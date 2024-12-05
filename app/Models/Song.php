@@ -15,6 +15,12 @@ class Song extends Model
     ];
 
 
+    public function scopeOrdered($q)
+    {
+        return $q->orderBy('pivot_song_order');
+    }
+
+
     public function albums(): BelongsToMany
     {
         return $this->belongsToMany(Album::class)
