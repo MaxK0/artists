@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 
 test('Возможность получить все данные альбомов', function () {
     $album = Album::factory()->create();
-    AlbumSong::factory(5)->create();
+    AlbumSong::factory()->create();
 
     $song = $album->songs()->first();
 
@@ -41,11 +41,13 @@ test('Возможность получить все данные альбомо
             'created_at' => $album->created_at->toISOString(),
             'updated_at' => $album->updated_at->toISOString(),
             'songs' => [
-                'id' => $song->id,
-                'title' => $song->title,
-                'order' => $song->pivot->song_order,
-                'created_at' => $song->created_at->toISOString(),
-                'updated_at' => $song->updated_at->toISOString(),
+                [
+                    'id' => $song->id,
+                    'title' => $song->title,
+                    'order' => $song->pivot->song_order,
+                    'created_at' => $song->created_at->toISOString(),
+                    'updated_at' => $song->updated_at->toISOString(),
+                ]
             ]
         ]);
 });
@@ -108,11 +110,13 @@ test('Возможность показать данные определенн�
                 'created_at' => $album->created_at->toISOString(),
                 'updated_at' => $album->updated_at->toISOString(),
                 'songs' => [
-                    'id' => $song->id,
-                    'title' => $song->title,
-                    'order' => $song->pivot->song_order,
-                    'created_at' => $song->created_at->toISOString(),
-                    'updated_at' => $song->updated_at->toISOString(),
+                    [
+                        'id' => $song->id,
+                        'title' => $song->title,
+                        'order' => $song->pivot->song_order,
+                        'created_at' => $song->created_at->toISOString(),
+                        'updated_at' => $song->updated_at->toISOString(),
+                    ]
                 ]
             ]
         ]);
@@ -122,7 +126,8 @@ test('Возможность обновить данные альбома', func
     $album = Album::factory()->create();
 
     $albumData = [
-        'release_year' => 1000
+        'release_year' => 1000,
+        'artist_id' => $album->artist->id
     ];
 
     $this->putJson(route('api.v1.albums.update', $album->id), $albumData)
@@ -131,6 +136,7 @@ test('Возможность обновить данные альбома', func
             'album' => [
                 'id' => $album->id,
                 'release_year' => $albumData['release_year'],
+                'artist_id' => $album->artist->id,
                 'created_at' => $album->created_at->toISOString(),
                 'updated_at' => $album->refresh()->updated_at->toISOString()
             ]
@@ -186,7 +192,7 @@ test('Возможность прикрепить песни к альбому',
         'song_order' => 1
     ]);
 
-    $this->assertdatabaseHas('album_song', [
+    $this->assertDatabaseHas('album_song', [
         'album_id' => $album->id,
         'song_id' => $song2->id,
         'song_order' => 2
@@ -199,7 +205,7 @@ test('Невозможность прикрепить песни с неверн
     $song = Song::factory()->create();
 
     $data = [
-        'song_ids' => [$song->id, 5]
+        'song_ids' => [$song->id, 50000]
     ];
 
     $this->postJson(route('api.v1.albums.songs.attach', $album->id), $data)
@@ -220,7 +226,7 @@ test('Невозможность прикрепить песню, которая
     $album = Album::factory()->create();
     $song = Song::factory()->create();
 
-    $album->songs()->attach($song->id);
+    $album->songs()->attach([$song->id => ['song_order' => 1]]);
 
     $data = [
         'song_ids' => [$song->id]
@@ -234,7 +240,7 @@ test('Возможность открепить песни от альбома',
     $album = Album::factory()->create();
     $song = Song::factory()->create();
 
-    $album->songs()->attach($song->id);
+    $album->songs()->attach($song->id, ['song_order' => 1]);
 
     $data = [
         'song_ids' => [$song->id]
@@ -254,7 +260,7 @@ test('Невозможность открепить песни от альбом
     $song1 = Song::factory()->create();
     $song2 = Song::factory()->create();
 
-    $album->songs()->attach($song1->id);
+    $album->songs()->attach($song1->id, ['song_order' => 1]);
 
     $data = [
         'song_ids' => [$song2->id]
@@ -362,7 +368,7 @@ test('Возможность изменить порядок песни в ал�
 
     $this->assertDatabaseHas('album_song', [
         'album_id' => $album->id,
-        'song_id' => $song3->id,
+        'song_id' => $song1->id,
         'song_order' => 3
     ]);
 });
