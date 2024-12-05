@@ -17,7 +17,7 @@
                 "parameters": [
                     {
                         "name": "perPage",
-                        "in": "path",
+                        "in": "query",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -25,7 +25,7 @@
                     },
                     {
                         "name": "page",
-                        "in": "path",
+                        "in": "query",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -221,7 +221,7 @@
                 "parameters": [
                     {
                         "name": "perPage",
-                        "in": "path",
+                        "in": "query",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -229,7 +229,7 @@
                     },
                     {
                         "name": "page",
-                        "in": "path",
+                        "in": "query",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -411,7 +411,7 @@
                 "parameters": [
                     {
                         "name": "perPage",
-                        "in": "path",
+                        "in": "query",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -419,7 +419,7 @@
                     },
                     {
                         "name": "page",
-                        "in": "path",
+                        "in": "query",
                         "required": false,
                         "schema": {
                             "type": "integer"
