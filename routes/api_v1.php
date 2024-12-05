@@ -15,4 +15,4 @@ Route::prefix('/albums/{album}/songs')->name('albums.songs.')->group(function ()
     Route::post('/attach', [AlbumController::class, 'attachSongs'])->name('attach');
     Route::post('/detach', [AlbumController::class, 'detachSongs'])->name('detach');
     Route::put('/{song}/updateOrder', [AlbumController::class, 'updateSongsOrder'])->name('updateOrder');
-});
+}); 

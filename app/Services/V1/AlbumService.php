@@ -44,13 +44,13 @@ class AlbumService extends BaseService
 
     public function attachSongs(Album $album, array $data): void
     {
-        $order = $album->songs()->exists() ? $album->songs()->max('song_order') : 1;
+        $order = $album->songs()->exists() ? $album->songs()->max('song_order') : 0;
 
         $dataToAttach = [];
 
         foreach ($data['song_ids'] as $songId) {
-            $dataToAttach[$songId] = ['song_order' => $order];
             $order++;
+            $dataToAttach[$songId] = ['song_order' => $order];
         }
 
         $album
@@ -64,6 +64,19 @@ class AlbumService extends BaseService
         $album
             ->songs()
             ->detach($data['song_ids']);
+
+        $remainingSongs = $album
+            ->songs()
+            ->ordered()
+            ->get();
+
+        foreach ($remainingSongs as $index => $song) {
+            $song->pivot->song_order = $index + 1;
+
+            $album
+                ->songs()
+                ->updateExistingPivot($song->id, ['song_order' => $song->pivot->song_order]);
+        }
     }
 
 
