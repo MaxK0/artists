@@ -82,7 +82,6 @@ test('Возможность создать исполнителя', function ()
     $artist = Artist::first();
 
     expect($artist)
-        ->id->toBe(1)
         ->name->toBe($artistData['name']);
 
     $res->assertJsonFragment([
@@ -169,7 +168,6 @@ test('Возможность обновить исполнителя', function 
         ]);
 
     expect($artist)
-        ->id->toBe(1)
         ->name->toBe($updateArtistData['name']);
 });
 

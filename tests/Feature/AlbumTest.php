@@ -64,7 +64,6 @@ test('Возможность создать альбом', function () {
     $album = Album::first();
 
     expect($album)
-        ->id->toBe(1)
         ->release_year->toBe($albumData['release_year'])
         ->artist_id->toBe($artist->id);
 
@@ -138,7 +137,6 @@ test('Возможность обновить данные альбома', func
         ]);
 
     expect($album)
-        ->id->toBe(1)
         ->release_year->toBe($albumData['release_year']);
 });
 

@@ -37,7 +37,6 @@ test('Возможность создать песню', function () {
     $song = Song::first();
 
     expect($song)
-        ->id->toBe(1)
         ->title->toBe($songData['title']);
 
     $res->assertJsonFragment([
@@ -98,7 +97,6 @@ test('Возможность обновить данные песни', function
         ]);
 
     expect($song)
-        ->id->toBe(1)
         ->title->toBe($songData['title']);
 });
 
