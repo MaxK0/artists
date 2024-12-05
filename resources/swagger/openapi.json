@@ -1,0 +1,835 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Music API",
+        "version": "1.0.0",
+        "description": "API для управления исполнителями, песнями и альбомами."
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1"
+        }
+    ],
+    "paths": {
+        "/artists": {
+            "get": {
+                "summary": "Получить список исполнителей",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список исполнителей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Artist"
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "name": "Исполнитель 1",
+                                            "created_at": "2024-12-05T11:57:19Z",
+                                            "updated_at": "2024-12-05T11:57:19Z",
+                                            "albums": [
+                                                {
+                                                    "id": 1,
+                                                    "release_year": 2024,
+                                                    "created_at": "2024-12-05T11:57:19Z",
+                                                    "updated_at": "2024-12-05T11:57:19Z",
+                                                    "songs": [
+                                                        {
+                                                            "id": 1,
+                                                            "title": "Песня 1",
+                                                            "order": 1,
+                                                            "created_at": "2024-12-05T11:57:19Z",
+                                                            "updated_at": "2024-12-05T11:57:19Z"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Создать нового исполнителя",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ArtistCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Исполнитель создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Artist"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/artists/{id}": {
+            "get": {
+                "summary": "Получить исполнителя по ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Исполнитель найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Artist"
+                                },
+                                "example": {
+                                    "artist": {
+                                        "id": 1,
+                                        "name": "Исполнитель 1",
+                                        "created_at": "2024-12-05T11:57:19Z",
+                                        "updated_at": "2024-12-05T11:57:19Z",
+                                        "albums": [
+                                            {
+                                                "id": 1,
+                                                "release_year": 2024,
+                                                "created_at": "2024-12-05T11:57:19Z",
+                                                "updated_at": "2024-12-05T11:57:19Z",
+                                                "songs": [
+                                                    {
+                                                        "id": 1,
+                                                        "title": "Песня 1",
+                                                        "order": 1,
+                                                        "created_at": "2024-12-05T11:57:19Z",
+                                                        "updated_at": "2024-12-05T11:57:19Z"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Исполнитель не найден"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Обновить исполнителя",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ArtistUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Исполнитель обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Artist"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Исполнитель не найден"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Удалить исполнителя",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Исполнитель удален"
+                    },
+                    "404": {
+                        "description": "Исполнитель не найден"
+                    }
+                }
+            }
+        },
+        "/albums": {
+            "get": {
+                "summary": "Получить список альбомов",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список альбомов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Album"
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "release_year": 2024,
+                                            "artist_id": 1,
+                                            "created_at": "2024-12-05T11:57:19Z",
+                                            "updated_at": "2024-12-05T11:57:19Z",
+                                            "songs": [
+                                                {
+                                                    "id": 1,
+                                                    "title": "Песня 1",
+                                                    "order": 1,
+                                                    "created_at": "2024-12-05T11:57:19Z",
+                                                    "updated_at": "2024-12-05T11:57:19Z"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Создать новый альбом",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AlbumCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Альбом создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/albums/{id}": {
+            "get": {
+                "summary": "Получить альбом по ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Альбом найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album"
+                                },
+                                "example": {
+                                    "album": {
+                                        "id": 1,
+                                        "release_year": 2024,
+                                        "artist_id": 1,
+                                        "created_at": "2024-12-05T11:57:19Z",
+                                        "updated_at": "2024-12-05T11:57:19Z",
+                                        "songs": [
+                                            {
+                                                "id": 1,
+                                                "title": "Песня 1",
+                                                "order": 1,
+                                                "created_at": "2024-12-05T11:57:19Z",
+                                                "updated_at": "2024-12-05T11:57:19Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Альбом не найден"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Обновить альбом",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AlbumUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Альбом обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Альбом не найден"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Удалить альбом",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Альбом удален"
+                    },
+                    "404": {
+                        "description": "Альбом не найден"
+                    }
+                }
+            }
+        },
+        "/songs": {
+            "get": {
+                "summary": "Получить список песен",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список песен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Song"
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "title": "Песня 1",
+                                            "created_at": "2024-12-05T11:57:19Z",
+                                            "updated_at": "2024-12-05T11:57:19Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Создать новую песню",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SongCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Песня создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/songs/{id}": {
+            "get": {
+                "summary": "Получить песню по ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Песня найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                },
+                                "example": {
+                                    "song": {
+                                        "id": 1,
+                                        "title": "Песня 1",
+                                        "created_at": "2024-12-05T11:57:19Z",
+                                        "updated_at": "2024-12-05T11:57:19Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Песня не найдена"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Обновить песню",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SongUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Песня обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Песня не найдена"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Удалить песню",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Песня удалена"
+                    },
+                    "404": {
+                        "description": "Песня не найдена"
+                    }
+                }
+            }
+        },
+        "/albums/{album}/songs/attach": {
+            "post": {
+                "summary": "Прикрепить песни к альбому",
+                "parameters": [
+                    {
+                        "name": "album",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "song_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "song_ids"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Песни успешно прикреплены"
+                    }
+                }
+            }
+        },
+        "/albums/{album}/songs/detach": {
+            "post": {
+                "summary": "Открепить песни от альбома",
+                "parameters": [
+                    {
+                        "name": "album",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "song_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "song_ids"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Песни успешно откреплены"
+                    }
+                }
+            }
+        },
+        "/albums/{album}/songs/{song}/updateOrder": {
+            "put": {
+                "summary": "Обновить порядок песни в альбоме",
+                "parameters": [
+                    {
+                        "name": "album",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "song",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "song_order": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "song_order"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Порядок песни обновлен"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Artist": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "ArtistCreate": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "ArtistUpdate": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Song": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "SongCreate": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "SongUpdate": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Album": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "release_year": {
+                        "type": "integer"
+                    },
+                    "artist_id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "AlbumCreate": {
+                "type": "object",
+                "properties": {
+                    "release_year": {
+                        "type": "integer"
+                    },
+                    "artist_id": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "release_year",
+                    "artist_id"
+                ]
+            },
+            "AlbumUpdate": {
+                "type": "object",
+                "properties": {
+                    "release_year": {
+                        "type": "integer"
+                    },
+                    "artist_id": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}
