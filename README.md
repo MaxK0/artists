@@ -4,7 +4,7 @@
 - docker-compose exec laravel.test composer install
 - docker-compose down
 - Настройка .env
-- ./vendor/bin/sail up
+- ./vendor/bin/sail up -d
 - Можно добавить alias: alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 - sail artisan key:generate
 - sail artisan migrate
