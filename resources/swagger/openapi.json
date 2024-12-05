@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Music API",
+        "title": "Artists API",
         "version": "1.0.0",
         "description": "API для управления исполнителями, песнями и альбомами."
     },
