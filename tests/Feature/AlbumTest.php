@@ -2,6 +2,7 @@
 
 use App\Models\Album;
 use App\Models\AlbumSong;
+use App\Models\Artist;
 use App\Models\Song;
 use Illuminate\Http\Response;
 
@@ -18,6 +19,7 @@ test('Возможность получить все данные альбомо
                 '*' => [
                     'id',
                     'release_year',
+                    'artist_id',
                     'created_at',
                     'updated_at',
                     'songs' => [
@@ -35,6 +37,7 @@ test('Возможность получить все данные альбомо
         ->assertJsonFragment([
             'id' => $album->id,
             'release_year' => $album->release_year,
+            'artist_id' => $album->artist->id,
             'created_at' => $album->created_at->toISOString(),
             'updated_at' => $album->updated_at->toISOString(),
             'songs' => [
@@ -48,8 +51,11 @@ test('Возможность получить все данные альбомо
 });
 
 test('Возможность создать альбом', function () {
+    $artist = Artist::factory()->create();
+
     $albumData = [
-        'release_year' => 1000
+        'release_year' => 1000,
+        'artist_id' => $artist->id
     ];
 
     $res = $this->postJson(route('api.v1.albums.store'), $albumData)
@@ -59,12 +65,14 @@ test('Возможность создать альбом', function () {
 
     expect($album)
         ->id->toBe(1)
-        ->release_year->toBe($albumData['release_year']);
+        ->release_year->toBe($albumData['release_year'])
+        ->artist_id->toBe($artist->id);
 
     $res->assertJsonFragment([
         'album' => [
             'id' => $album->id,
             'release_year' => $album->release_year,
+            'artist_id' => $artist->id,
             'created_at' => $album->created_at->toISOString(),
             'updated_at' => $album->updated_at->toISOString(),
         ]
@@ -97,6 +105,7 @@ test('Возможность показать данные определенн�
             'album' => [
                 'id' => $album->id,
                 'release_year' => $album->release_year,
+                'artist_id' => $album->artist->id,
                 'created_at' => $album->created_at->toISOString(),
                 'updated_at' => $album->updated_at->toISOString(),
                 'songs' => [

@@ -28,6 +28,7 @@ test('Возможность получить все данные исполни
                         '*' => [
                             'id',
                             'release_year',
+                            'artist_id',
                             'created_at',
                             'updated_at',
                             'songs' => [
@@ -53,6 +54,7 @@ test('Возможность получить все данные исполни
                 [
                     'id' => $album->id,
                     'release_year' => $album->release_year,
+                    'artist_id' => $artist->id,
                     'created_at' => $album->created_at->toISOString(),
                     'updated_at' => $album->updated_at->toISOString(),
                     'songs' => [
@@ -128,6 +130,7 @@ test('Возможность показать данные определенн�
                     [
                         'id' => $album->id,
                         'release_year' => $album->release_year,
+                        'artist_id' => $artist->id,
                         'created_at' => $album->created_at->toISOString(),
                         'updated_at' => $album->updated_at->toISOString(),
                         'songs' => [
