@@ -18,4 +18,18 @@ class UpdateSongsOrderRequest extends FormRequest
             'song_order' => ['required', 'integer', 'min:1']
         ];
     }
+
+    public function after(): array
+    {
+        return [
+            function (Validator $validator) {
+                if (! $this->album->songs()->where('songs.id', $this->song->id)->exists()) {
+                    $validator->errors()->add(
+                        'song',
+                        'Песни нет в альбоме'
+                    );
+                };
+            }
+        ];
+    }
 }
