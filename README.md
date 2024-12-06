@@ -1,8 +1,11 @@
 ## Запуск через docker-compose
 
-- docker-compose up -d
-- docker-compose exec laravel.test composer install
-- docker-compose down
+- docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
 - Настройка .env
 - ./vendor/bin/sail up -d
 - Можно добавить alias: alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
